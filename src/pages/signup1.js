@@ -8,7 +8,7 @@ import { InputGroup } from "react-bootstrap";
 import axios from "axios";
 import { useRef } from 'react';
 import database from './firebase.js';
-import { getDatabase, ref, set } from "firebase/database.js";
+import { getDatabase, ref, set } from "firebase/database";
 
 /*
 This Signup code contains only character limit as password policy
@@ -18,24 +18,25 @@ This Signup code contains only character limit as password policy
 
 
 export default function SignUp() {
-    const db = getDatabase();
+    
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
 
     const { register, handleSubmit } = useForm();
-    const dataRef = useRef()
 
-    const onSubmit = data => {
+    function submiton() {
+        let data = document.getElementById("userform");
+        data.submit();
         console.log("IM HERE")
         if (checkIfValid(data.password) == true){
             
             //alert("Successfully Signed up!");
-            database.ref(db, 'user/').set({
+            database.ref("user").set({
                 username : username,
                 password : password,
-                }).catch((error) => {
+              }).catch((error) => {
                       console.log(error)
-                })
+                  })
 
 
         console.log(JSON.stringify(data));
@@ -72,10 +73,10 @@ export default function SignUp() {
         <body>
         <div style={{ backgroundColor: "#63b8c7", paddingTop: "0.3%", paddingBottom: "0.3%", paddingLeft: "1%", margin: "0" }}> </div>
             <h1>Exploratory</h1>
-        <form onSubmit={onSubmit}>
+        <form>
             <div className="form-group">
             <label>Username</label>
-            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter username" ref={dataRef}/>
+            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter username"/>
             </div>
 
             <div className="form-group">
@@ -84,7 +85,7 @@ export default function SignUp() {
             <small id="passwordHelp" className="form-text text-muted">Your password must be 10 charecters long.</small>
             </div>
 
-            <button type="submit" className="btn btn-primary">Sign Up</button>
+            <button onClick={submiton()} type="button" className="btn btn-primary">Sign Up</button>
             </form>
     </body>
     )
