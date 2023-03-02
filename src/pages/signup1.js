@@ -16,7 +16,7 @@ This Signup code contains only character limit as password policy
 
 
 
-
+var user = 0;
 export default function SignUp() {
     
     const [username, setUserName] = useState();
@@ -24,34 +24,33 @@ export default function SignUp() {
 
     const { register, handleSubmit } = useForm();
 
-    function submiton() {
-        let data = document.getElementById("userform");
-        data.submit();
+    const onSubmit = data => {
         console.log("IM HERE")
+        
         if (checkIfValid(data.password) == true){
-            
+            user = user + 1
             //alert("Successfully Signed up!");
-            database.ref("user").set({
+            database.ref("user"+ user).set({
                 username : username,
                 password : password,
               }).catch((error) => {
                       console.log(error)
                   })
 
-
         console.log(JSON.stringify(data));
         }
-
+        
     };
 
     //check if password valid
     const checkIfValid = password => {
         //password more than 10 cherecters 
+        /*
         if (password.length < 10) {
           alert("Password must be at least 10 characters long");
           return false;
         } 
-        /*
+        
         //password contains number
         if (/[0-9]/.test(password) !== true){
             alert("Password must be contain a number");
@@ -73,7 +72,7 @@ export default function SignUp() {
         <body>
         <div style={{ backgroundColor: "#63b8c7", paddingTop: "0.3%", paddingBottom: "0.3%", paddingLeft: "1%", margin: "0" }}> </div>
             <h1>Exploratory</h1>
-        <form>
+        <form onSubmit={onSubmit}>
             <div className="form-group">
             <label>Username</label>
             <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter username"/>
@@ -85,7 +84,7 @@ export default function SignUp() {
             <small id="passwordHelp" className="form-text text-muted">Your password must be 10 charecters long.</small>
             </div>
 
-            <button onClick={submiton()} type="button" className="btn btn-primary">Sign Up</button>
+            <button onClick={onSubmit} type="button" className="btn btn-primary">Sign Up</button>
             </form>
     </body>
     )
