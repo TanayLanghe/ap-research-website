@@ -1,43 +1,50 @@
-import React from "react";
+import React, { useId } from "react";
 import { useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Row, Col, Button } from 'react-bootstrap'
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { InputGroup } from "react-bootstrap";
-import axios from "axios";
-import { useRef } from 'react';
 import database from './firebase.js';
-import { getDatabase, ref, set } from "firebase/database";
-
+import { useNavigate } from "react-router-dom";
 /*
 This Signup code contains only character limit as password policy
 */
+const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+function generateString(length) {
+    let result = ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+
+    return result;
+}
 
 
 
-var user = 0;
+
 export default function SignUp() {
+
+    //var newUrl = "https://docs.google.com/forms/d/e/1FAIpQLScQQz8wFpdVJyWNdGc1La1iXKOR438xRl2SAyfqsV1EGo58dQ/viewform?usp=sf_link";
+    var user = generateString(20);
     
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
-
-    const { register, handleSubmit } = useForm();
+    const navigate = useNavigate();
+    //const website1 = database.ref('Website1/');
 
     const onSubmit = data => {
-        console.log("IM HERE")
-        
         if (checkIfValid(data.password) == true){
-            user = user + 1
-            //alert("Successfully Signed up!");
-            database.ref("user"+ user).set({
+            database.ref('Website1/'+user).set({
                 username : username,
                 password : password,
+                
               }).catch((error) => {
                       console.log(error)
                   })
 
         console.log(JSON.stringify(data));
+        window.location.href = "http://www.w3schools.com";
+        return false;
         }
         
     };
@@ -46,8 +53,9 @@ export default function SignUp() {
     const checkIfValid = password => {
         //password more than 10 cherecters 
         /*
-        if (password.length < 10) {
-          alert("Password must be at least 10 characters long");
+        if (!password) {
+            console.log(password +" After")
+          alert("Please enter a password");
           return false;
         } 
         
@@ -80,10 +88,9 @@ export default function SignUp() {
 
             <div className="form-group">
             <label>Password</label>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/> 
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" /> 
             <small id="passwordHelp" className="form-text text-muted">Your password must be 10 charecters long.</small>
             </div>
-
             <button onClick={onSubmit} type="button" className="btn btn-primary">Sign Up</button>
             </form>
     </body>
