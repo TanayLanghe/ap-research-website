@@ -15,7 +15,6 @@ function generateString(length) {
     for ( let i = 0; i < length; i++ ) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
-
     return result;
 }
 
@@ -24,13 +23,11 @@ function generateString(length) {
 
 export default function SignUp() {
 
-    //var newUrl = "https://docs.google.com/forms/d/e/1FAIpQLScQQz8wFpdVJyWNdGc1La1iXKOR438xRl2SAyfqsV1EGo58dQ/viewform?usp=sf_link";
     var user = generateString(20);
     
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
     const navigate = useNavigate();
-    //const website1 = database.ref('Website1/');
 
     const onSubmit = data => {
         if (checkIfValid(data.password) == true){
@@ -41,9 +38,8 @@ export default function SignUp() {
               }).catch((error) => {
                       console.log(error)
                   })
-
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScQQz8wFpdVJyWNdGc1La1iXKOR438xRl2SAyfqsV1EGo58dQ/viewform?usp=sf_link";
         console.log(JSON.stringify(data));
-        window.location.href = "http://www.w3schools.com";
         return false;
         }
         
@@ -78,21 +74,25 @@ export default function SignUp() {
 
     return (
         <body>
-        <div style={{ backgroundColor: "#63b8c7", paddingTop: "0.3%", paddingBottom: "0.3%", paddingLeft: "1%", margin: "0" }}> </div>
+        <div style={{ backgroundColor: "#63b8c7", paddingTop: "0.3%", paddingBottom: "0.3%", paddingLeft: "1%", margin: "0" }}> 
             <h1>Exploratory</h1>
-        <form onSubmit={onSubmit}>
+        </div>
+        <br />
+        <br />
+        <center><form onSubmit={onSubmit}>
             <div className="form-group">
             <label>Username</label>
-            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter username"/>
+            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter username" />
             </div>
-
+            <br />
+            <br />
             <div className="form-group">
             <label>Password</label>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" /> 
-            <small id="passwordHelp" className="form-text text-muted">Your password must be 10 charecters long.</small>
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1"  placeholder="Password" size="1"/> 
+            <small id="passwordHelp" className="form-text text-muted">Your password must be 10 characters long.</small>
             </div>
             <button onClick={onSubmit} type="button" className="btn btn-primary">Sign Up</button>
-            </form>
+            </form></center>
     </body>
     )
 }
