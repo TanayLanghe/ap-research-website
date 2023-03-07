@@ -1,47 +1,54 @@
 import React from "react";
-import { useForm } from "react-hook-form";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Form, Row, Col, Button } from 'react-bootstrap'
-import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { InputGroup } from "react-bootstrap";
-
+import database from './firebase.js';
 /*
-This Signup code contains only character limit as password policy
+This Signup code contains only character minimum as password policy
 */
 
-const initialValues = {
-    username: "",
-    password: "",
-};
-
-export const listOfUsers = [];
-
+const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+function generateString(length) {
+    let result = ' ';
+    const charactersLength = characters.length;
+    for ( let i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
 
 export default function SignUp() {
 
-    const { register, handleSubmit } = useForm();
+    var user = generateString(20);
+    
+    const [username, setUserName] = useState();
+    const [password, setPassword] = useState();
 
     const onSubmit = data => {
-        if (checkIfValid(data.password) == true){
-            listOfUsers.push(data);
-            
-            alert("Successfully Signed up!");
-
-            console.log("________________");
-            console.log(listOfUsers);
+        if (checkIfValid(data.password) === true){
+            database.ref('Website2/'+user).set({
+                username : username,
+                password : password,
+                
+              }).catch((error) => {
+                      console.log(error)
+                  })
+        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScQQz8wFpdVJyWNdGc1La1iXKOR438xRl2SAyfqsV1EGo58dQ/viewform?usp=sf_link";
+        console.log(JSON.stringify(data));
+        return false;
         }
-
+        
     };
 
     //check if password valid
     const checkIfValid = password => {
         //password more than 10 cherecters 
-        if (password.length < 10) {
-          alert("Password must be at least 10 characters long");
+        /*
+        if (!password) {
+            console.log(password +" After")
+          alert("Please enter a password");
           return false;
         } 
-
+        
         //password contains number
         if (/[0-9]/.test(password) !== true){
             alert("Password must be contain a number");
@@ -53,6 +60,7 @@ export default function SignUp() {
             alert("Password must contain the letter A");
             return false
         }
+        */
         return true;
     }
 
@@ -60,54 +68,29 @@ export default function SignUp() {
 
     return (
         <body>
-            <div style={{ backgroundColor: "#63b8c7", paddingTop: "0.3%", paddingBottom: "0.3%", paddingLeft: "1%", margin: "0" }}>
-                <h1>Exploratory2</h1>
+        <div style={{ backgroundColor: "#63b8c7", paddingTop: "0.3%", paddingBottom: "0.3%", paddingLeft: "1%", margin: "0" }}> 
+            <h1>Exploratory</h1>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <center><form onSubmit={onSubmit}>
+            <div className="form-group">
+            <label>Username</label>
+            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="w-25 form-control"  placeholder="Enter username"/>
             </div>
             <br />
             <br />
-            <br />
-            <div className="container">
-                <h2 style={{ textAlign: "center" }}>Information</h2>
-                <Form onSubmit={handleSubmit(onSubmit)}>
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formUsername">
-                            <Form.Label>Username</Form.Label>
-                            <InputGroup hasValidation>
-                                <InputGroup.Text id="inputGroupPrepend">@</InputGroup.Text>
-                                <Form.Control
-                                    name="username"
-                                    label="UserName"
-                                    type="text"
-                                    placeholder="Username"
-                                    aria-describedby="inputGroupPrepend"
-                                    {...register("Username")}
-                                    required
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Please choose a username.
-                                </Form.Control.Feedback>
-                            </InputGroup>
-                        </Form.Group>
-                    </Row>
-
-                    <Row className="mb-3">
-                        <Form.Group as={Col} controlId="formPassword">
-                            <Form.Label>Password</Form.Label>
-                            <Form.Control name="password" label="Password" type="password" placeholder="Password" required {...register("password")}/>
-                            <Form.Control.Feedback type="invalid">
-                                Please Create a Password.
-                            </Form.Control.Feedback>
-                        </Form.Group>
-                    </Row>
-                    <br />
-                    <Row>
-                        <Button type="submit" style={{ backgroundColor: "#63b8c7", float: "right" }}>
-                            Sign Up
-                        </Button>
-                    </Row>
-
-                </Form>
+            <div className="form-group">
+            <label>Password</label>
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="w-25 form-control" id="Password"  placeholder="Password" /> 
+            <small id="passwordHelp" className="form-text text-muted">Your password must have a capital letter</small>
             </div>
-        </body>
+            <br />
+            <button onClick={onSubmit} type="button" className="btn btn-outline-primary">Sign Up</button>
+        </form></center>
+    </body>
     )
 }

@@ -1,14 +1,12 @@
-import React, { useId } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 import database from './firebase.js';
-import { useNavigate } from "react-router-dom";
 /*
-This Signup code contains only character limit as password policy
+This Signup code contains only character minimum as password policy
 */
-const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
+const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 function generateString(length) {
     let result = ' ';
     const charactersLength = characters.length;
@@ -18,19 +16,15 @@ function generateString(length) {
     return result;
 }
 
-
-
-
 export default function SignUp() {
 
     var user = generateString(20);
     
     const [username, setUserName] = useState();
     const [password, setPassword] = useState();
-    const navigate = useNavigate();
 
     const onSubmit = data => {
-        if (checkIfValid(data.password) == true){
+        if (checkIfValid(data.password) === true){
             database.ref('Website1/'+user).set({
                 username : username,
                 password : password,
@@ -79,20 +73,24 @@ export default function SignUp() {
         </div>
         <br />
         <br />
+        <br />
+        <br />
+        <br />
         <center><form onSubmit={onSubmit}>
             <div className="form-group">
             <label>Username</label>
-            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="form-control" aria-describedby="emailHelp" placeholder="Enter username" />
+            <input value={username} onChange={(e) => setUserName(e.target.value)} type="text" className="w-25 form-control"  placeholder="Enter username"/>
             </div>
             <br />
             <br />
             <div className="form-group">
             <label>Password</label>
-            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="form-control" id="exampleInputPassword1"  placeholder="Password" size="1"/> 
+            <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="w-25 form-control" id="Password"  placeholder="Password" /> 
             <small id="passwordHelp" className="form-text text-muted">Your password must be 10 characters long.</small>
             </div>
-            <button onClick={onSubmit} type="button" className="btn btn-primary">Sign Up</button>
-            </form></center>
+            <br />
+            <button onClick={onSubmit} type="button" className="btn btn-outline-primary">Sign Up</button>
+        </form></center>
     </body>
     )
 }
