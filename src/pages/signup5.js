@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { useState } from "react";
 import database from './firebase.js';
 /*
-This Signup code contains only capital letter and number, not at the begining or end
+This Signup code contains random words amount password policy
 */
 
 const characters ='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -25,7 +25,7 @@ export default function SignUp() {
 
     const onSubmit = data => {
         if (checkIfValid(data.password) === true){
-            database.ref('Website2/'+user).set({
+            database.ref('Website5/'+user).set({
                 username : username,
                 password : password,
                 
@@ -86,7 +86,7 @@ export default function SignUp() {
             <div className="form-group">
             <label>Password</label>
             <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="w-25 form-control" id="Password"  placeholder="Password" /> 
-            <small id="passwordHelp" className="form-text text-muted">Your password must contain a capital letter and number, that is not at the begining or end (ie. XXAX7XX 7 and A within)</small>
+            <small id="passwordHelp" className="form-text text-muted">Your password must have a capital letter</small>
             </div>
             <br />
             <button onClick={onSubmit} type="button" className="btn btn-outline-primary">Sign Up</button>

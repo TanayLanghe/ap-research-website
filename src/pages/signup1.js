@@ -32,7 +32,7 @@ export default function SignUp() {
               }).catch((error) => {
                       console.log(error)
                   })
-        window.location.href = "https://docs.google.com/forms/d/e/1FAIpQLScQQz8wFpdVJyWNdGc1La1iXKOR438xRl2SAyfqsV1EGo58dQ/viewform?usp=sf_link";
+        window.location.href = "https://sites.google.com/d/1zhRR6c-qfM4WpBS1NJEaEzZ6QRPMcRl7/p/1OLBFSbv1Z3yHhq_kgbqH_CUUBZs7j4vd/edit";
         console.log(JSON.stringify(data));
         return false;
         }
